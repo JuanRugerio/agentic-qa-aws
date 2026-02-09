@@ -2,10 +2,15 @@
 
 ## Tech Stack 
 -LangChain
+
 -Pinecone
+
 -OpenAI
+
 -AWS
+
 -Python
+
 -Docker
 
 ## Brief Overview
