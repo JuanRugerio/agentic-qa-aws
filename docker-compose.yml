@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: infra/Dockerfile.api
+    image: agentic-api
+    ports:
+      - "8080:8080"
+
+  worker:
+    build:
+      context: .
+      dockerfile: infra/Dockerfile.worker
+    image: agentic-worker

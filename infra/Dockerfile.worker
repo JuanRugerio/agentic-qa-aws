@@ -1,0 +1,12 @@
+FROM agentic-base:latest
+
+WORKDIR /app
+
+COPY . .
+
+# Make Python detect worker.py and app/ correctly
+ENV PYTHONPATH=/app
+
+CMD ["python", "worker.py"]
+
+

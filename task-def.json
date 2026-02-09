@@ -1,0 +1,45 @@
+{
+  "family": "agentic-worker-latest",
+  "executionRoleArn": "arn:aws:iam::434824682833:role/ecs-exec-role",
+  "taskRoleArn": "arn:aws:iam::434824682833:role/agentic-rag-ecs-task-role",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": ["FARGATE"],
+  "cpu": "1024",
+  "memory": "2048",
+  "runtimePlatform": {
+    "cpuArchitecture": "X86_64",
+    "operatingSystemFamily": "LINUX"
+  },
+
+  "containerDefinitions": [
+    {
+      "name": "agentic-worker",
+      "image": "434824682833.dkr.ecr.us-east-1.amazonaws.com/agentic-worker:latest",
+      "cpu": 512,
+      "memory": 1024,
+      "essential": true,
+      "workingDirectory": "/app",
+      "entryPoint": ["python", "worker.py"],
+      "environment": [
+        { "name": "PINECONE_INDEX", "value": "rag-index" },
+        { "name": "S3_BUCKET", "value": "agentic-rag-app-docs" },
+        { "name": "AWS_REGION", "value": "us-east-1" },
+        { "name": "AWS_SECRET_NAME", "value": "agentic-app/credentials" },
+        { "name": "EMBED_MODEL", "value": "sentence-transformers/all-MiniLM-L6-v2" },
+        { "name": "PINECONE_DIM", "value": "384" },
+        { "name": "OPENAI_MODEL", "value": "gpt-4o-mini" },
+        { "name": "DYNAMO_TABLE", "value": "RAGMetadata" },
+        { "name": "SQS_URL", "value": "https://sqs.us-east-1.amazonaws.com/434824682833/agentic-queue" }
+      ],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/",
+          "awslogs-region": "us-east-1",
+          "awslogs-create-group": "true",
+          "awslogs-stream-prefix": "ecs"
+        }
+      }
+    }
+  ]
+}
